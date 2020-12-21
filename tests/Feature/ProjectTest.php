@@ -29,16 +29,28 @@ class ProjectTest extends TestCase
 	}
 
 	/** @test **/
-	public function authenticated_user_can_be_view_a_project_show_on_page()
+	public function authenticated_user_can_be_view_their_project_only_show_on_page()
 	{
-		$this->actingAs(factory(User::class)->create());
-
 		$project = factory(Project::class)->create();
 
-		$this->get($project->path())
-			->assertViewIs('projects.show')
-			->assertSee($project->title)
-			->assertSee($project->description);
+		$this->actingAs(factory($user = User::class)->create());
+		$project2 = factory(Project::class)->create(['owner_id' => auth()->id()]);
+
+		$this->get($project->path())->assertStatus(403);
+		$this->get($project2->path())->assertStatus(200);
+	}
+
+	/** @test **/
+	public function authenticated_user_can_be_view_their_project_only_index()
+	{
+		$project = factory(Project::class)->create();
+
+		$this->actingAs(factory($user = User::class)->create());
+		$project2 = factory(Project::class)->create(['owner_id' => auth()->id()]);
+
+		$this->get('/projects')
+			->assertDontSee($project->title)
+			->assertSee($project2->title);
 	}
 
 
