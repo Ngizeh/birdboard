@@ -32,7 +32,7 @@ class ProjectTest extends TestCase
 
 		$project = factory(Project::class)->create();
 
-		$this->get('/projects/' . $project->id)
+		$this->get($project->path())
 			->assertViewIs('projects.show')
 			->assertSee($project->title)
 			->assertSee($project->description);
