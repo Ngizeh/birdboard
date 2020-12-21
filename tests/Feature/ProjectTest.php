@@ -16,7 +16,7 @@ class ProjectTest extends TestCase
 
 		$attributes = factory(Project::class)->make()->toArray();
 
-		$this->post('/projects', $attributes)->assertRedirect(route('projects'));
+		$this->post('/projects', $attributes)->assertRedirect(route('projects.index'));
 
 		$this->assertDatabaseHas('projects', $attributes);
 
@@ -24,6 +24,20 @@ class ProjectTest extends TestCase
 
 		$this->get('projects')->assertSee($attributes['description']);
 	}
+
+	/** @test **/
+	public function project_can_be_viewed_in_show_page()
+	{
+		$this->withoutExceptionHandling();
+
+		$project = factory(Project::class)->create();
+
+		$this->get('/projects/' . $project->id)
+			->assertViewIs('projects.show')
+			->assertSee($project->title)
+			->assertSee($project->description);
+	}
+
 
 	/** @test **/
 	public function a_project_requires_a_title()
