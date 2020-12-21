@@ -20,8 +20,8 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 
-Route::get('/projects', 'ProjectController@index')->name('projects.index');
+Route::get('/projects', 'ProjectController@index')->name('projects.index')->middleware('auth');
 
-Route::get('/projects/{project}', 'ProjectController@show')->name('projects.show');
+Route::get('/projects/{project}', 'ProjectController@show')->name('projects.show')->middleware('auth');
 
 Route::post('/projects', 'ProjectController@store')->name('projects.store')->middleware('auth');

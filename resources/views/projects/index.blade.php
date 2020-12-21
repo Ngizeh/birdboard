@@ -6,14 +6,16 @@
 	<title>Document</title>
 </head>
 <body>
-		<ul></ul>
-	@foreach ($projects as $project)
+	<h3>Projects</h3>
+	<ul>
+		@foreach ($projects as $project)
 		<li>
 			{{ $project->title }}
 		</li>
 		<p>
 			{{ $project->description }}
 		</p>
-	@endforeach
+		@endforeach
+	</ul>
 </body>
 </html>
