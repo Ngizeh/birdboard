@@ -8,13 +8,15 @@
 <body>
 	<h3>Projects</h3>
 	<ul>
-		@foreach ($projects as $project)
+		@forelse ($projects as $project)
 		<li>
 			{{ $project->title }}
 		</li>
 		<p>
 			{{ $project->description }}
 		</p>
+		@@empty
+		 <p>You don't have projects yet</p>
 		@endforeach
 	</ul>
 </body>

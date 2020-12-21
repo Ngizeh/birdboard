@@ -6,7 +6,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
-class ProjectTest extends TestCase
+class ManageProjectTest extends TestCase
 {
 	use RefreshDatabase;
 
@@ -75,29 +75,13 @@ class ProjectTest extends TestCase
 	}
 
 	/** @test **/
-	public function guests_can_not_create_a_project()
-	{
-		//TODO
-		$attributes = factory(Project::class)->raw(['owner_id' => null]);
-
-		$this->post('/projects', $attributes)->assertRedirect('login');
-	}
-
-	/** @test **/
-	public function guests_can_not_view_a_sigle_project()
+	public function guests_can_not_manage_a_project()
 	{
 		$project = factory(Project::class)->create();
 
-		$this->get('/projects/'.$project->id)->assertRedirect('login');
-	}
-
-	/** @test **/
-	public function guests_can_not_view_a_project()
-	{
-		$project = factory(Project::class)->create();
-
+		$this->post('/projects')->assertRedirect('login');
+		$this->get($project->path())->assertRedirect('login');
 		$this->get('/projects/')->assertRedirect('login');
 	}
-
 
 }
