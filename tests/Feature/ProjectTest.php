@@ -1,22 +1,20 @@
 <?php
 
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
+use App\Project;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
+use Tests\TestCase;
 
 class ProjectTest extends TestCase
 {
-	use WithFaker, RefreshDatabase;
+	use RefreshDatabase;
 
 	/** @test **/
 	public function a_user_can_create_a_project()
 	{
 		$this->withoutExceptionHandling();
 
-		$attributes = [
-			'title' => $this->faker->sentence,
-			'description'=> $this->faker->paragraph
-		];
+		$attributes = factory(Project::class)->make()->toArray();
 
 		$this->post('/projects', $attributes)->assertRedirect(route('projects'));
 
@@ -30,10 +28,8 @@ class ProjectTest extends TestCase
 	/** @test **/
 	public function a_project_requires_a_title()
 	{
-		$attributes = [
-			'title' => null,
-			'description'=> $this->faker->paragraph
-		];
+
+		$attributes = factory(Project::class)->raw(['title' => null]);
 
 		$this->post('/projects', $attributes)->assertSessionHasErrors('title');
 	}
@@ -41,10 +37,7 @@ class ProjectTest extends TestCase
 	/** @test **/
 	public function a_project_requires_a_description()
 	{
-		$attributes = [
-			'title' => $this->faker->sentence,
-			'description'=> null
-		];
+		$attributes = factory(Project::class)->raw(['description' => null]);
 
 		$this->post('/projects', $attributes)->assertSessionHasErrors('description');
 	}
