@@ -17,6 +17,8 @@ class ManageProjectTest extends TestCase
 
 		$this->actingAs($user = factory(User::class)->create());
 
+		$this->get('projects/create')->assertStatus(200)->assertViewIs('projects.create');
+
 		$attributes = factory(Project::class)->raw(['owner_id' => $user->id]);
 
 		$this->post('/projects', $attributes)->assertRedirect(route('projects.index'));

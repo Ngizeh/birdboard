@@ -15,9 +15,9 @@
 		<p>
 			{{ $project->description }}
 		</p>
-		@@empty
+		@empty
 		 <p>You don't have projects yet</p>
-		@endforeach
+		@endforelse
 	</ul>
 </body>
 </html>
