@@ -1,6 +1,7 @@
 <?php
 
 use App\Project;
+use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -14,7 +15,9 @@ class ProjectTest extends TestCase
 	{
 		$this->withoutExceptionHandling();
 
-		$attributes = factory(Project::class)->make()->toArray();
+		$this->actingAs($user = factory(User::class)->create());
+
+		$attributes = factory(Project::class)->raw(['owner_id' => $user->id]);
 
 		$this->post('/projects', $attributes)->assertRedirect(route('projects.index'));
 
@@ -28,7 +31,6 @@ class ProjectTest extends TestCase
 	/** @test **/
 	public function project_can_be_viewed_in_show_page()
 	{
-		$this->withoutExceptionHandling();
 
 		$project = factory(Project::class)->create();
 
@@ -42,6 +44,7 @@ class ProjectTest extends TestCase
 	/** @test **/
 	public function a_project_requires_a_title()
 	{
+		$this->actingAs($user = factory(User::class)->create());
 
 		$attributes = factory(Project::class)->raw(['title' => null]);
 
@@ -51,18 +54,20 @@ class ProjectTest extends TestCase
 	/** @test **/
 	public function a_project_requires_a_description()
 	{
+		$this->actingAs($user = factory(User::class)->create());
+
 		$attributes = factory(Project::class)->raw(['description' => null]);
 
 		$this->post('/projects', $attributes)->assertSessionHasErrors('description');
 	}
 
 	/** @test **/
-	public function a_project_requires_a_user()
+	public function guests_can_not_add_a_project()
 	{
-
+		//TODO
 		$attributes = factory(Project::class)->raw(['owner_id' => null]);
 
-		$this->post('/projects', $attributes)->assertSessionHasErrors('owner_id');
+		$this->post('/projects', $attributes)->assertRedirect('login');
 	}
 
 
