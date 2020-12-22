@@ -19,15 +19,17 @@ class ManageProjectTest extends TestCase
 
 		$this->get('projects/create')->assertStatus(200)->assertViewIs('projects.create');
 
-		$attributes = factory(Project::class)->raw(['owner_id' => $user->id]);
+		$project = factory(Project::class)->raw(['owner_id' => $user->id]);
 
-		$this->post('/projects', $attributes)->assertRedirect(route('projects.index'));
+		$this->post('/projects', $project)->assertRedirect(route('projects.index'));
 
-		$this->assertDatabaseHas('projects', $attributes);
+		$this->assertDatabaseHas('projects', $project);
 
-		$this->get('projects')->assertSee($attributes['title']);
+		$this->get('projects')->assertSee($project['title']);
 
-		$this->get('projects')->assertSee($attributes['description']);
+		$project = Project::first();
+
+		$this->get('projects')->assertSee(route('projects.show', $project->id));
 	}
 
 	/** @test **/

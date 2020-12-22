@@ -1,22 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Document</title>
-</head>
-<body>
-	<h3>Create Project</h3>
-	<form action="/projects" method="post">
-		@csrf
-		<label for="title">Title</label>
-		<input type="text" name="title">
+ @extends('layouts.app')
 
-		<label for="description">Description</label>
-		<textarea name="description"></textarea>
+ @section('content')
 
-		<button type="submit">Add Project</button>
+ <h3>Create Project</h3>
 
-	</form>
-</body>
-</html>
+ <form action="/projects" method="post">
+ 	@csrf
+ 	<div>
+ 		<div>
+ 			<label for="title">Title</label>
+ 			<input type="text" name="title">
+ 		</div>
+
+ 		<div>
+ 			<label for="description">Description</label>
+ 			<textarea name="description"></textarea>
+ 		</div>
+
+ 		<button type="submit">Add Project</button>
+ 		<a href="{{ route('projects.index') }}">Cancel</a>
+ 	</div>
+
+ </form>
+
+
+ @endsection
