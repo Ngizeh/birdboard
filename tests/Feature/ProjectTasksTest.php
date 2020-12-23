@@ -19,12 +19,45 @@ class ProjectTasksTest extends TestCase
 
     	$this->signIn();
 
-    	$project = factory(Project::class)->create();
+    	$project = factory(Project::class)->create(['owner_id' => auth()->id()]);
 
     	$this->post($project->path() .'/tasks', ['body' => 'Test body']);
 
     	$this->assertDatabaseHas('tasks', ['body' => 'Test body']);
 
     }
+
+     /** @test **/
+    public function only_the_owner_of_the_project_can_add_a_taskt_to_project()
+    {
+    	$this->signIn();
+
+    	$project = factory(Project::class)->create();
+
+    	$this->post($project->path() .'/tasks', ['body' => 'Test body'])->assertStatus(403);
+
+    	$this->assertDatabaseMissing('tasks', ['body' => 'Test body']);
+
+    }
+
+    /** @test **/
+	public function a_tasks_requires_a_task()
+	{
+		$this->signIn();
+
+		$project = factory(Project::class)->create(['owner_id' =>  auth()->id()]);
+
+		$this->post($project->path().'/tasks', [])->assertSessionHasErrors('body');
+	}
+
+	 /** @test **/
+	public function guests_canot_add_a_task()
+	{
+		$project = factory(Project::class)->create();
+
+		$this->post($project->path().'/tasks', [])->assertRedirect('/login');;
+	}
+
+
 
 }

@@ -29,7 +29,7 @@ class ManageProjectTest extends TestCase
 
 		$project = factory(Project::class)->raw(['owner_id' => auth()->id()]);
 
-		$this->post('/projects', $project)->assertRedirect(route('projects.index'));
+		$this->post('/projects', $project);
 
 		$this->assertDatabaseHas('projects', $project);
 
@@ -43,14 +43,16 @@ class ManageProjectTest extends TestCase
 	/** @test **/
 	public function authenticated_user_can_be_view_their_project_only_show_on_page()
 	{
+
 		$project = factory(Project::class)->create();
 
 		$this->signIn();
 
 		$project2 = factory(Project::class)->create(['owner_id' => auth()->id()]);
 
-		$this->get($project->path())->assertStatus(403);
 		$this->get($project2->path())->assertStatus(200);
+
+		$this->get($project->path())->assertStatus(403);
 	}
 
 	/** @test **/

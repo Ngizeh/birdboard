@@ -29,5 +29,5 @@ Route::middleware('auth')->group(function() {
 
 	Route::post('/projects', 'ProjectController@store')->name('projects.store');
 
-	Route::post('/projects/{project}/tasks', 'ProjectTasksController@store');
+	Route::post('/projects/{project}/tasks', 'ProjectTasksController@store')->name('tasks.store');
 });
