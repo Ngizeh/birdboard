@@ -28,4 +28,6 @@ Route::middleware('auth')->group(function() {
 	Route::get('/projects/{project}', 'ProjectController@show')->name('projects.show');
 
 	Route::post('/projects', 'ProjectController@store')->name('projects.store');
+
+	Route::post('/projects/{project}/tasks', 'ProjectTasksController@store');
 });
