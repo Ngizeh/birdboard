@@ -10,16 +10,24 @@ class ManageProjectTest extends TestCase
 {
 	use RefreshDatabase;
 
+	protected function validatedData($attributes = [])
+	{
+		return array_merge([
+			factory(Project::class)->raw(),
+		], $attributes);
+	}
+
+
 	/** @test **/
 	public function a_user_can_create_a_project()
 	{
 		$this->withoutExceptionHandling();
 
-		$this->actingAs($user = factory(User::class)->create());
+		$this->signIn();
 
 		$this->get('projects/create')->assertStatus(200)->assertViewIs('projects.create');
 
-		$project = factory(Project::class)->raw(['owner_id' => $user->id]);
+		$project = factory(Project::class)->raw(['owner_id' => auth()->id()]);
 
 		$this->post('/projects', $project)->assertRedirect(route('projects.index'));
 
@@ -37,7 +45,8 @@ class ManageProjectTest extends TestCase
 	{
 		$project = factory(Project::class)->create();
 
-		$this->actingAs(factory($user = User::class)->create());
+		$this->signIn();
+
 		$project2 = factory(Project::class)->create(['owner_id' => auth()->id()]);
 
 		$this->get($project->path())->assertStatus(403);
@@ -49,21 +58,22 @@ class ManageProjectTest extends TestCase
 	{
 		$project = factory(Project::class)->create();
 
-		$this->actingAs(factory($user = User::class)->create());
+		$this->signIn();
+
 		$project2 = factory(Project::class)->create(['owner_id' => auth()->id()]);
 
 		$this->get('/projects')
-			->assertDontSee($project->title)
-			->assertSee($project2->title);
+		->assertDontSee($project->title)
+		->assertSee($project2->title);
 	}
 
 
 	/** @test **/
 	public function a_project_requires_a_title()
 	{
-		$this->actingAs($user = factory(User::class)->create());
+		$this->signIn();
 
-		$attributes = factory(Project::class)->raw(['title' => null]);
+		$attributes = $this->validatedData(['title' => null]);
 
 		$this->post('/projects', $attributes)->assertSessionHasErrors('title');
 	}
@@ -71,9 +81,9 @@ class ManageProjectTest extends TestCase
 	/** @test **/
 	public function a_project_requires_a_description()
 	{
-		$this->actingAs($user = factory(User::class)->create());
+		$this->signIn();
 
-		$attributes = factory(Project::class)->raw(['description' => null]);
+		$attributes = $this->validatedData(['description' => null]);
 
 		$this->post('/projects', $attributes)->assertSessionHasErrors('description');
 	}
