@@ -35,7 +35,7 @@ class ManageProjectTest extends TestCase
 
 		$this->get('projects')->assertSee($project['title']);
 
-		$project = Project::first();
+		$project = Project::where($project)->first();
 
 		$this->get('projects')->assertSee(route('projects.show', $project->id));
 	}
@@ -65,8 +65,8 @@ class ManageProjectTest extends TestCase
 		$project2 = factory(Project::class)->create(['owner_id' => auth()->id()]);
 
 		$this->get('/projects')
-		->assertDontSee($project->title)
-		->assertSee($project2->title);
+            ->assertDontSee($project->title)
+            ->assertSee($project2->title);
 	}
 
 
