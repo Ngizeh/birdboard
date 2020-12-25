@@ -27,9 +27,11 @@ Route::middleware('auth')->group(function() {
 
 	Route::get('/projects/{project}', 'ProjectController@show')->name('projects.show');
 
-	Route::post('/projects', 'ProjectController@store')->name('projects.store');
+    Route::patch('/projects/{project}', 'ProjectController@update')->name('projects.update');
 
-	Route::post('/projects/{project}/tasks', 'ProjectTasksController@store')->name('tasks.store');
+    Route::post('/projects', 'ProjectController@store')->name('projects.store');
+
+    Route::post('/projects/{project}/tasks', 'ProjectTasksController@store')->name('tasks.store');
 
 	Route::patch('/projects/{project}/tasks/{task}', 'ProjectTasksController@update')->name('tasks.update');
 });

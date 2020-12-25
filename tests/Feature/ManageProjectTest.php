@@ -8,96 +8,137 @@ use Tests\TestCase;
 
 class ManageProjectTest extends TestCase
 {
-	use RefreshDatabase;
+    use RefreshDatabase;
 
-	protected function validatedData($attributes = [])
-	{
-		return array_merge([
-			factory(Project::class)->raw(),
-		], $attributes);
-	}
+    protected function validatedData($attributes = [])
+    {
+        return array_merge([
+            factory(Project::class)->raw(),
+        ], $attributes);
+    }
 
 
-	/** @test **/
-	public function a_user_can_create_a_project()
-	{
-		$this->withoutExceptionHandling();
+    /** @test **/
+    public function a_user_can_create_a_project()
+    {
+        $this->withoutExceptionHandling();
 
-		$this->signIn();
+        $this->signIn();
 
-		$this->get('projects/create')->assertStatus(200)->assertViewIs('projects.create');
+        $this->get('projects/create')->assertStatus(200)->assertViewIs('projects.create');
 
-		$project = factory(Project::class)->raw(['owner_id' => auth()->id()]);
+        $project = factory(Project::class)->raw(['owner_id' => auth()->id()]);
 
-		$this->post('/projects', $project);
+        $this->post('/projects', $project);
 
-		$this->assertDatabaseHas('projects', $project);
+        $this->assertDatabaseHas('projects', $project);
 
-		$this->get('projects')->assertSee($project['title']);
+        $this->get('projects')->assertSee($project['title']);
 
-		$project = Project::where($project)->first();
+        $project = Project::where($project)->first();
 
-		$this->get('projects')->assertSee(route('projects.show', $project->id));
-	}
+        $this->get('projects')->assertSee(route('projects.show', $project));
+    }
 
-	/** @test **/
-	public function authenticated_user_can_be_view_their_project_only_show_on_page()
-	{
+    /** @test **/
+    public function a_project_can_have_a_notes()
+    {
+        $this->signIn();
 
-		$project = factory(Project::class)->create();
+        $this->withoutExceptionHandling();
 
-		$this->signIn();
+        $project = factory(Project::class)->create(['owner_id' => auth()->id()]);
 
-		$project2 = factory(Project::class)->create(['owner_id' => auth()->id()]);
+        $attributes = [
+            'notes' => 'General Notes'
+        ];
 
-		$this->get($project2->path())->assertStatus(200);
+        $this->patch($project->path(), $attributes)->assertRedirect(route('projects.show', $project->id));
 
-		$this->get($project->path())->assertStatus(403);
-	}
+        $this->assertDatabaseHas('projects', ['notes' => 'General Notes']);
+    }
 
-	/** @test **/
-	public function authenticated_user_can_be_view_their_project_only_index()
-	{
-		$project = factory(Project::class)->create();
+    /** @test **/
+    public function authenticated_user_can_be_view_their_project_only_show_on_page()
+    {
 
-		$this->signIn();
+        $project = factory(Project::class)->create();
 
-		$project2 = factory(Project::class)->create(['owner_id' => auth()->id()]);
+        $this->signIn();
 
-		$this->get('/projects')
+        $project2 = factory(Project::class)->create(['owner_id' => auth()->id()]);
+
+        $this->get($project2->path())->assertStatus(200);
+
+        $this->get($project->path())->assertStatus(403);
+    }
+
+    /** @test **/
+    public function authenticated_user_can_be_view_their_project_only_index()
+    {
+        $project = factory(Project::class)->create();
+
+        $this->signIn();
+
+        $project2 = factory(Project::class)->create(['owner_id' => auth()->id()]);
+
+        $this->get('/projects')
             ->assertDontSee($project->title)
             ->assertSee($project2->title);
-	}
+    }
 
 
-	/** @test **/
-	public function a_project_requires_a_title()
-	{
-		$this->signIn();
+    /** @test **/
+    public function a_project_requires_a_title()
+    {
 
-		$attributes = $this->validatedData(['title' => null]);
+        $this->signIn();
 
-		$this->post('/projects', $attributes)->assertSessionHasErrors('title');
-	}
+        $attributes = $this->validatedData(['title' => null]);
 
-	/** @test **/
-	public function a_project_requires_a_description()
-	{
-		$this->signIn();
+        $this->post('/projects', $attributes)->assertSessionHasErrors('title');
+    }
 
-		$attributes = $this->validatedData(['description' => null]);
+//    /** @test **/
+//    public function a_project_requires_a_title_on_update()
+//    {
+//
+//        $this->signIn();
+//
+//        $project = factory(Project::class)->create(['owner_id' => auth()->id()]);
+//
+//        $this->patch($project->path(), ['title' => null])->assertSessionHasErrors('title');
+//    }
+//
+//    /** @test **/
+//    public function a_project_requires_a_description_on_update()
+//    {
+//
+//        $this->signIn();
+//
+//        $project = factory(Project::class)->create(['owner_id' => auth()->id()]);
+//
+//        $this->patch($project->path(), ['description' => null])->assertSessionHasErrors('description');
+//    }
 
-		$this->post('/projects', $attributes)->assertSessionHasErrors('description');
-	}
+    /** @test **/
+    public function a_project_requires_a_description()
+    {
+        $this->signIn();
 
-	/** @test **/
-	public function guests_can_not_manage_a_project()
-	{
-		$project = factory(Project::class)->create();
+        $attributes = $this->validatedData(['description' => null]);
 
-		$this->post('/projects')->assertRedirect('login');
-		$this->get($project->path())->assertRedirect('login');
-		$this->get('/projects/')->assertRedirect('login');
-	}
+        $this->post('/projects', $attributes)->assertSessionHasErrors('description');
+    }
+
+    /** @test **/
+    public function guests_can_not_manage_a_project()
+    {
+        $project = factory(Project::class)->create();
+
+        $this->post('/projects')->assertRedirect('login');
+        $this->get($project->path())->assertRedirect('login');
+        $this->get('/projects/')->assertRedirect('login');
+    }
 
 }
