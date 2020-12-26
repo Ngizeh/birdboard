@@ -41,8 +41,9 @@
                 </div>
                 <div class="flex flex-col space-y-2 mt-4">
                     <label class="text-gray-700 font-medium" for="password">Confirm Password</label>
-                    <input type="password" name="password"
-                           class="border border-gray-300 rounded py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent" name="password_confirmation" required autocomplete="new-password" autofocus>
+                    <input type="password"
+                           class="border border-gray-300 rounded py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
+                           name="password_confirmation" required autocomplete="new-password" autofocus>
                 </div>
                 <div class="flex items-center my-3">
                     <input type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>

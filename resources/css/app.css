@@ -1,6 +1,9 @@
 .card {
 	@apply bg-white p-5 shadow rounded-lg;
 }
+.button {
+   @apply bg-blue-400 py-2 px-6 text-white rounded-lg
+}
 
 @tailwind base;
 @tailwind components;

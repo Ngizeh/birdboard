@@ -1,27 +1,14 @@
- @extends('layouts.app')
+@extends('layouts.app')
 
- @section('content')
+@section('content')
 
- <h3>Create Project</h3>
+    <div class="container w-1/2 mx-auto mt-5">
+        <div class="card py-8">
+            <h3 class="py-6 text-2xl text-center">Let Create Something New</h3>
+            <form action="/projects" method="post">
+                @include('partials.form', ['buttonText' => 'Add Project'])
+            </form>
+        </div>
+    </div>
 
- <form action="/projects" method="post">
- 	@csrf
- 	<div>
- 		<div>
- 			<label for="title">Title</label>
- 			<input type="text" name="title">
- 		</div>
-
- 		<div>
- 			<label for="description">Description</label>
- 			<textarea name="description"></textarea>
- 		</div>
-
- 		<button type="submit">Add Project</button>
- 		<a href="{{ route('projects.index') }}">Cancel</a>
- 	</div>
-
- </form>
-
-
- @endsection
+@endsection
