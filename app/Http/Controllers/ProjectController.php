@@ -10,80 +10,86 @@ class ProjectController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function index()
     {
-    	$projects = auth()->user()->projects;
+        $projects = auth()->user()->projects;
 
-    	return view('projects.index', compact('projects'));
+        return view('projects.index', compact('projects'));
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Routing\View|\Illuminate\View\View
      */
-    public function create()
+    public function create(Project $project)
     {
-        return view('projects.create');
+        return view('projects.create', compact('project'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Routing\Redirector
      */
     public function store(Request $request)
     {
-    	$attributes = request()->validate([
-    		'title' => 'required',
-    		'description' => 'required',
+        $attributes = request()->validate([
+            'title' => 'required',
+            'description' => 'required',
             'notes' => 'min:3'
-    	]);
+        ]);
 
- 		$project = auth()->user()->projects()->create($attributes);
+        $project = auth()->user()->projects()->create($attributes);
 
-    	return redirect($project->path());
+        return redirect($project->path());
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Project  $project
-     * @return \Illuminate\Http\Response
+     * @param \App\Project $project
+     * @return \Illuminate\View\View
      */
     public function show(Project $project)
     {
-    	$this->authorize('update', $project);
+        $this->authorize('update', $project);
 
-    	return view('projects.show', compact('project'));
+        return view('projects.show', compact('project'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Project  $project
-     * @return \Illuminate\Http\Response
+     * @param \App\Project $project
+     * @return \Illuminate\View\View
      */
     public function edit(Project $project)
     {
-        //
+        return view('projects.edit', compact('project'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Project  $project
-     * @return \Illuminate\Http\Response
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Project $project
+     * @return \Illuminate\Routing\Redirector
      */
-    public function update(Request $request, Project $project)
+    public function update(Project $project)
     {
         $this->authorize('update', $project);
 
-        $project->update(['notes' => request('notes')]);
+        $attributes = request()->validate([
+            'title' => 'sometimes|required',
+            'description' => 'sometimes|required',
+            'notes' => 'nullable'
+        ]);
+
+        $project->update($attributes);
 
         return redirect($project->path());
     }
@@ -91,7 +97,7 @@ class ProjectController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Project  $project
+     * @param \App\Project $project
      * @return \Illuminate\Http\Response
      */
     public function destroy(Project $project)

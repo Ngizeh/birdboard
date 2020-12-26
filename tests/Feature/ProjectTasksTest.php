@@ -15,8 +15,6 @@ class ProjectTasksTest extends TestCase
     /** @test **/
     public function tasks_can_be_added_by_on_the_project()
     {
-    	$this->withoutExceptionHandling();
-
     	$this->signIn();
 
     	$project = factory(Project::class)->create(['owner_id' => auth()->id()]);
@@ -30,8 +28,6 @@ class ProjectTasksTest extends TestCase
     /** @test **/
     public function tasks_can_be_updated_and_marked_as_read()
     {
-        $this->withoutExceptionHandling();
-
         $this->signIn();
 
         $project = factory(Project::class)->create(['owner_id' => auth()->id()]);
