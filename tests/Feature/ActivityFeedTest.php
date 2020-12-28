@@ -28,4 +28,52 @@ class ActivityFeedTest extends TestCase
         $this->assertCount(2, $project->activity);
         $this->assertDatabaseHas('activities', ['activity' => 'updated']);
     }
+
+    /** @test **/
+    public function it_records_an_activity_for_a_created_task()
+    {
+        $this->signIn();
+        $project = factory(Project::class)->create(['owner_id' => auth()->id()]);
+        $project->addTask('Test task');
+        $this->assertCount(2, $project->activity);
+        $this->assertDatabaseHas('activities', ['activity' => 'created_task']);
+    }
+
+    /** @test **/
+    public function it_records_an_activity_for_a_marked_as_completed_task()
+    {
+        $this->signIn();
+
+        $project = factory(Project::class)->create(['owner_id' => auth()->id()]);
+        $task = $project->addTask('Test task');
+        $task->completed();
+        $this->assertCount(3, $task->project->activity);
+        $this->assertDatabaseHas('activities', ['activity' => 'completed_task']);
+    }
+
+    /** @test **/
+    public function it_records_an_activity_for_a_marked_as_incomplete_task()
+    {
+        $this->signIn();
+
+        $project = factory(Project::class)->create(['owner_id' => auth()->id()]);
+        $task = $project->addTask('Test task');
+        $task->completed();
+        $this->assertCount(3, $task->project->activity);
+        $task->incomplete();
+        $this->assertCount(4, $task->project->fresh()->activity);
+        $this->assertDatabaseHas('activities', ['activity' => 'incomplete_task']);
+    }
+
+    /** @test **/
+    public function it_records_an_activity_for_a_deleted_task()
+    {
+        $this->signIn();
+
+        $project = factory(Project::class)->create(['owner_id' => auth()->id()]);
+        $task = $project->addTask('Test task');
+        $task->delete();
+        $this->assertCount(3, $project->fresh()->activity);
+        $this->assertDatabaseHas('activities', ['activity' => 'deleted_task']);
+    }
 }

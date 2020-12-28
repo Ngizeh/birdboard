@@ -10,6 +10,33 @@ class Task extends Model
 
     protected $touches = ['project'];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::created(function ($task){
+            $task->project->recordActivity('created_task');
+        });
+
+        static::deleted(function ($task){
+            $task->project->recordActivity('deleted_task');
+        });
+    }
+
+    public function completed()
+    {
+        $this->update(['completed' => true]);
+
+        $this->project->recordActivity('completed_task');
+    }
+
+    public function incomplete()
+    {
+        $this->update(['completed' => false]);
+
+        $this->project->recordActivity('incomplete_task');
+    }
+
     public function project()
     {
         return $this->belongsTo(Project::class);
