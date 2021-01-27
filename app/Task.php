@@ -3,47 +3,40 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 
 class Task extends Model
 {
+    use RecordsActivity;
+
     protected $guarded = [];
 
     protected $touches = ['project'];
 
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::created(function ($task){
-            $task->project->recordActivity('created_task');
-        });
-
-        static::deleted(function ($task){
-            $task->project->recordActivity('deleted_task');
-        });
-    }
+    protected static $recordableEvents = ['created', 'deleted'];
 
     public function completed()
     {
         $this->update(['completed' => true]);
 
-        $this->project->recordActivity('completed_task');
+        $this->recordActivity('completed_task');
     }
 
     public function incomplete()
     {
         $this->update(['completed' => false]);
 
-        $this->project->recordActivity('incomplete_task');
+        $this->recordActivity('incomplete_task');
     }
 
-    public function project()
+    public function project(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Project::class);
     }
 
-    public function path()
+    public function path(): string
     {
         return "/projects/{$this->project->id}/tasks/{$this->id}";
     }
+
 }

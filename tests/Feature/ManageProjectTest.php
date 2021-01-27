@@ -77,7 +77,7 @@ class ManageProjectTest extends TestCase
     /** @test **/
     public function authenticated_user_can_be_view_their_project_only_show_on_page()
     {
-
+        
         $project = factory(Project::class)->create();
 
         $this->signIn();

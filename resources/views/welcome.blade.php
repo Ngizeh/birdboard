@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
-	<title>Laravel</title>
+	<title>{{ config('app.name', 'Laravel') }}</title>
 
 	<link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
@@ -83,7 +83,7 @@
 
 		<div class="content">
 			<div class="title m-b-md">
-				Laravel
+				{{ config('app.name') }}
 			</div>
 
 			<div class="links">

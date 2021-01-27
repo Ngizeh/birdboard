@@ -7,11 +7,11 @@
                 @csrf
                 <h2 class="text-center text-2xl font-bold">Register</h2>
                 <div class="flex flex-col space-y-2">
-                    <label class="text-gray-700 font-medium" for="email">Name</label>
+                    <label class="text-gray-700 font-medium" for="name">Name</label>
                     <input type="text" name="name"
                            class="border border-gray-300 rounded py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent  @error('name') border-red-300 @enderror" name="name"
-                           value="{{ old('name') }}" required autocomplete="email" autofocus>
-                    @error('email')
+                           value="{{ old('name') }}" required autocomplete="name" autofocus>
+                    @error('name')
                     <span class="text-red-300" role="alert">
                         <strong>{{ $message }}</strong>
                     </span>

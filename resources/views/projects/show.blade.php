@@ -48,23 +48,7 @@
             </div>
             <div class="w-1/4">
                 @include('partials.card')
-                <div class="card mt-4">
-                    <ul>
-                        @foreach($project->activity as $activity)
-                            @if($activity->activity === 'created')
-                                <li>You create a project</li>
-                            @elseif($activity->activity === 'completed_task')
-                                <li>You completed a task</li>
-                            @elseif($activity->activity === 'updated')
-                                <li>You updated a project</li>
-                            @elseif($activity->activity === 'incomplete_task')
-                                <li>You marked a task as in complete</li>
-                            @elseif($activity->activity === 'deleted_task')
-                                <li>You deleted a task</li>
-                            @endif
-                        @endforeach
-                    </ul>
-                </div>
+               @include('activity.card')
             </div>
         </div>
     </main>

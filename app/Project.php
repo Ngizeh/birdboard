@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Project extends Model
 {
+    use RecordsActivity;
+
     protected $guarded = [];
 
     public function path()
@@ -13,34 +15,24 @@ class Project extends Model
     	return "/projects/{$this->id}";
     }
 
-    public function owner()
+    public function owner(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
     	return $this->belongsTo(User::class);
     }
 
-    public function tasks()
+    public function tasks(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
     	return $this->hasMany(Task::class);
     }
 
-    public function addTask($body)
+    public function addTask($body): Model
     {
     	return $this->tasks()->create(compact('body'));
     }
 
-    public function activity()
+    public function activity(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasMany(Activity::class);
+        return $this->hasMany(Activity::class)->latest();
     }
-
-    public function recordActivity($type)
-    {
-        Activity::create([
-            'project_id' => $this->id,
-            'activity' => $type
-        ]);
-    }
-
-
 
 }
