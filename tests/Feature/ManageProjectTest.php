@@ -21,13 +21,11 @@ class ManageProjectTest extends TestCase
     /** @test **/
     public function a_user_can_create_a_project()
     {
-        $this->withoutExceptionHandling();
-
-        $this->signIn();
+        $user = $this->signIn();
 
         $this->get('projects/create')->assertStatus(200)->assertViewIs('projects.create');
 
-        $project = factory(Project::class)->raw(['owner_id' => auth()->id()]);
+        $project = factory(Project::class)->raw(['owner_id' => $user]);
 
         $this->post('/projects', $project);
 
@@ -41,11 +39,29 @@ class ManageProjectTest extends TestCase
     }
 
     /** @test **/
+    public function project_owner_is_authorized_to_delete_a_project()
+    {
+
+        $user = $this->signIn();
+
+        $project = factory(Project::class)->create(['owner_id' => $user]);
+
+        $project2 = factory(Project::class)->create();
+
+        $this->delete($project->path())->assertRedirect('/projects');
+
+        $this->delete($project2->path())->assertStatus(403);
+
+        $this->assertDatabaseMissing('projects', $project->only('id'));
+
+    }
+
+    /** @test **/
     public function a_project_can_have_a_notes()
     {
-        $this->signIn();
+        $user = $this->signIn();
 
-        $project = factory(Project::class)->create(['owner_id' => auth()->id()]);
+        $project = factory(Project::class)->create(['owner_id' => $user]);
 
         $attributes = [
             'notes' => 'General Notes',
@@ -61,9 +77,9 @@ class ManageProjectTest extends TestCase
     /** @test **/
     public function a_project_can_have_a_title_and_description_sometimes()
     {
-        $this->signIn();
+        $user = $this->signIn();
 
-        $project = factory(Project::class)->create(['owner_id' => auth()->id()]);
+        $project = factory(Project::class)->create(['owner_id' => $user]);
 
         $attributes = [
             'notes' => 'General Notes'
@@ -77,12 +93,12 @@ class ManageProjectTest extends TestCase
     /** @test **/
     public function authenticated_user_can_be_view_their_project_only_show_on_page()
     {
-        
+
         $project = factory(Project::class)->create();
 
-        $this->signIn();
+        $user = $this->signIn();
 
-        $project2 = factory(Project::class)->create(['owner_id' => auth()->id()]);
+        $project2 = factory(Project::class)->create(['owner_id' => $user]);
 
         $this->get($project2->path())->assertStatus(200);
 
@@ -94,9 +110,9 @@ class ManageProjectTest extends TestCase
     {
         $project = factory(Project::class)->create();
 
-        $this->signIn();
+        $user = $this->signIn();
 
-        $project2 = factory(Project::class)->create(['owner_id' => auth()->id()]);
+        $project2 = factory(Project::class)->create(['owner_id' => $user]);
 
         $this->get('/projects')
             ->assertDontSee($project->title)
@@ -107,7 +123,6 @@ class ManageProjectTest extends TestCase
     /** @test **/
     public function a_project_requires_a_title()
     {
-
         $this->signIn();
 
         $attributes = $this->validatedData(['title' => null]);
@@ -119,9 +134,9 @@ class ManageProjectTest extends TestCase
     public function a_project_requires_a_title_on_update()
     {
 
-        $this->signIn();
+        $user = $this->signIn();
 
-        $project = factory(Project::class)->create(['owner_id' => auth()->id()]);
+        $project = factory(Project::class)->create(['owner_id' => $user]);
 
         $this->patch($project->path(), ['title' => null])->assertSessionHasErrors('title');
     }
@@ -130,9 +145,9 @@ class ManageProjectTest extends TestCase
     public function a_project_requires_a_description_on_update()
     {
 
-        $this->signIn();
+        $user = $this->signIn();
 
-        $project = factory(Project::class)->create(['owner_id' => auth()->id()]);
+        $project = factory(Project::class)->create(['owner_id' => $user]);
 
         $this->get(route('projects.edit', $project))
             ->assertOk()
@@ -145,7 +160,6 @@ class ManageProjectTest extends TestCase
     public function a_project_requires_a_description()
     {
         $this->signIn();
-
 
         $attributes = $this->validatedData(['description' => null]);
 
@@ -161,6 +175,7 @@ class ManageProjectTest extends TestCase
         $this->get(route('projects.edit', $project))->assertRedirect('login');
         $this->get($project->path())->assertRedirect('login');
         $this->get('/projects/')->assertRedirect('login');
+        $this->delete($project->path())->assertRedirect('login');
     }
 
 }

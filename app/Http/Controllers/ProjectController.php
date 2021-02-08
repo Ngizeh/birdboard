@@ -98,10 +98,14 @@ class ProjectController extends Controller
      * Remove the specified resource from storage.
      *
      * @param \App\Project $project
-     * @return \Illuminate\Http\Response
+     * * @return \Illuminate\Routing\Redirector
      */
     public function destroy(Project $project)
     {
-        //
+        $this->authorize('update', $project);
+
+        $project->delete();
+
+        return redirect('/projects');
     }
 }
