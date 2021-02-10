@@ -13,6 +13,35 @@ class InvitesUserTest extends TestCase
     use RefreshDatabase;
 
     /** @test **/
+    public function project_owner_can_invite_user_via_route()
+    {
+        $project = factory(Project::class)->create();
+
+        $userToInvite = factory(User::class)->create();
+
+        $response = $this->actingAs($project->owner)->post($project->path().'/invitations', [
+            'email' => $userToInvite->email,
+        ]);
+
+        $this->assertTrue($project->members->contains($userToInvite));
+
+        $response->assertRedirect('/projects');
+    }
+
+    /** @test **/
+    public function project_owner_can_invite_user_via_route_who_exists_in_the_birdboard()
+    {
+
+        $project = factory(Project::class)->create();
+
+       $this->actingAs($project->owner)->post($project->path().'/invitations', [
+            'email' => 'usernotexisting@mail.com'
+        ])->assertSessionHasErrors([
+            'email' => 'That email does not exist in any Birdboard account'
+        ]);
+    }
+
+    /** @test **/
     public function it_can_invite_a_user()
     {
         $project = factory(Project::class)->create();
@@ -28,3 +57,4 @@ class InvitesUserTest extends TestCase
     }
 
 }
+
