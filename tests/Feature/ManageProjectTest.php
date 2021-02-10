@@ -57,6 +57,15 @@ class ManageProjectTest extends TestCase
     }
 
     /** @test **/
+    public function projects_can_be_accessed_by_accessible_user_only()
+    {
+        $project = tap(factory(Project::class)->create())->invite($this->signIn());
+
+        $this->get('projects')->assertSee($project->title);
+
+    }
+
+    /** @test **/
     public function a_project_can_have_a_notes()
     {
         $user = $this->signIn();
