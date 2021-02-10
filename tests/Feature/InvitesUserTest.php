@@ -15,6 +15,7 @@ class InvitesUserTest extends TestCase
     /** @test **/
     public function project_owner_can_invite_user_via_route()
     {
+
         $project = factory(Project::class)->create();
 
         $userToInvite = factory(User::class)->create();
@@ -38,7 +39,7 @@ class InvitesUserTest extends TestCase
             'email' => 'usernotexisting@mail.com'
         ])->assertSessionHasErrors([
             'email' => 'That email does not exist in any Birdboard account'
-        ]);
+        ], null, 'invitations');
     }
 
     /** @test **/
@@ -49,6 +50,12 @@ class InvitesUserTest extends TestCase
         $project = factory(Project::class)->create();
 
        $this->actingAs($user)->post($project->path().'/invitations', [
+            'email' => 'usernotexisting@mail.com'
+        ])->assertStatus(403);
+
+       $project->invite($user);
+
+        $this->actingAs($user)->post($project->path().'/invitations', [
             'email' => 'usernotexisting@mail.com'
         ])->assertStatus(403);
     }

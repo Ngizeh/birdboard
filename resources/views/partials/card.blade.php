@@ -5,4 +5,11 @@
 		</a>
 	</div>
 	<div class="text-gray-400 py-5">{{ Str::limit($project->description, 100)}}</div>
+    <div class="text-right">
+        <form action="{{ route('projects.destroy', $project) }}" method="post">
+            @csrf
+            @method('delete')
+            <button type="submit" class="bg-red-600 py-2 px-6 font-bold text-white rounded">Delete</button>
+        </form>
+    </div>
 </div>

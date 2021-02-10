@@ -86,7 +86,7 @@ class ProjectController extends Controller
         $attributes = request()->validate([
             'title' => 'sometimes|required',
             'description' => 'sometimes|required',
-            'notes' => 'nullable'
+            'notes' => 'sometimes|min:3'
         ]);
 
         $project->update($attributes);

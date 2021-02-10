@@ -41,14 +41,17 @@
                     </button>
                 </form>
                 @error('notes')
-                <span class="text-red-500 mt-5" role="alert">
+                <span class="text-red-500 mt-6" role="alert">
                       <strong>{{ $message }}</strong>
                     </span>
                 @enderror
             </div>
             <div class="w-1/4">
                 @include('partials.card')
-               @include('activity.card')
+                @include('activity.card')
+                @can('manage', $project)
+                    @include('partials.invitations')
+                @endcan
             </div>
         </div>
     </main>
