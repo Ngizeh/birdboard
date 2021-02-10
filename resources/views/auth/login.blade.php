@@ -13,7 +13,7 @@
                            class="border border-gray-300 rounded py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent @error('email') border-red-300 @enderror" name="email"
                            value="{{ old('email') }}" required autocomplete="email" autofocus>
                     @error('email')
-                    <span class="text-red" role="alert">
+                    <span class="text-red-300" role="alert">
                         <strong>{{ $message }}</strong>
                     </span>
                     @enderror
@@ -23,8 +23,8 @@
                     <input type="password" name="password"
                            class="border border-gray-300 rounded py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent @error('password') border-red-300 @enderror" name="password"
                            value="{{ old('password') }}" required autocomplete="password" autofocus>
-                    @error('email')
-                    <span class="text-red" role="alert">
+                    @error('password')
+                    <span class="text-red-300" role="alert">
                         <strong>{{ $message }}</strong>
                     </span>
                     @enderror
