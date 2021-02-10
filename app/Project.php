@@ -35,4 +35,14 @@ class Project extends Model
         return $this->hasMany(Activity::class)->latest();
     }
 
+    public function invite(User $user) : void
+    {
+        $this->members()->attach($user);
+    }
+
+    public function members(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(User::class)->withTimestamps();
+    }
+
 }
