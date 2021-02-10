@@ -42,6 +42,18 @@ class InvitesUserTest extends TestCase
     }
 
     /** @test **/
+    public function only_project_owner_can_invite_user_via_route_who_exists_in_the_birdboard()
+    {
+        $user = $this->signIn();
+
+        $project = factory(Project::class)->create();
+
+       $this->actingAs($user)->post($project->path().'/invitations', [
+            'email' => 'usernotexisting@mail.com'
+        ])->assertStatus(403);
+    }
+
+    /** @test **/
     public function it_can_invite_a_user()
     {
         $project = factory(Project::class)->create();
