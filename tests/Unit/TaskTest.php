@@ -3,6 +3,7 @@
 namespace Tests\Unit;
 
 use App\Task;
+use App\User;
 use App\Project;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -18,6 +19,14 @@ class TaskTest extends TestCase
         $task = factory(Task::class)->create();
 
         $this->assertInstanceOf(Project::class, $task->project);
+    }
+
+    /** @test **/
+    public function it_belongs_to_a_user()
+    {
+        $task = factory(Task::class)->create();
+
+        $this->assertInstanceOf(User::class, $task->owner);
     }
 
     /** @test **/

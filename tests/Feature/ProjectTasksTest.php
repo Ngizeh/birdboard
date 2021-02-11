@@ -25,6 +25,17 @@ class ProjectTasksTest extends TestCase
 
     }
 
+    /** @test **/
+    public function a_task_can_have_a_user()
+    {
+        $user = $this->signIn();
+        $project = factory(Project::class)->create(['owner_id' => $user]);
+
+        $project->addTask('Test task');
+
+        $this->assertDatabaseHas('tasks', ['body' => 'Test task']);
+    }
+
     /** @test * */
     public function tasks_can_be_updated_and_marked_as_completed()
     {

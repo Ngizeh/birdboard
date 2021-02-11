@@ -27,7 +27,11 @@ class Project extends Model
 
     public function addTask($body): Model
     {
-    	return $this->tasks()->create(compact('body'));
+        return $this->tasks()->create([
+                'user_id' => auth()->id(),
+                'body' => $body
+            ]
+        );
     }
 
     public function activity(): \Illuminate\Database\Eloquent\Relations\HasMany

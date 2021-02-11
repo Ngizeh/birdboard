@@ -39,7 +39,12 @@ class User extends Authenticatable
 
     public function projects(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-    	return $this->hasMany(Project::class, 'owner_id')->latest('updated_at');
+        return $this->hasMany(Project::class, 'owner_id')->latest('updated_at');
+    }
+
+    public function tasks(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Task::class)->latest('updated_at');
     }
 
     public function accessibleProjects()

@@ -51,7 +51,7 @@ trait RecordsActivity
             'project_id' => class_basename($this) == 'Project' ? $this->id : $this->project_id,
             'description' => $type,
             'changes' => $this->activityChanges(),
-            'user_id' => ($this->project ?? $this)->owner->id
+            'user_id' => $this->owner->id
         ]);
     }
 

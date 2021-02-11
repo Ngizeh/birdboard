@@ -44,9 +44,10 @@ class ActivityFeedTest extends TestCase
     /** @test **/
     public function it_records_an_activity_for_a_created_task()
     {
-        $this->signIn();
-        $project = factory(Project::class)->create(['owner_id' => auth()->id()]);
+        $user = $this->signIn();
+        $project = factory(Project::class)->create(['owner_id' => $user]);
         $project->addTask('Test task');
+
         $this->assertCount(2, $project->activity);
         tap($project->activity->last(), function($activity){
             $this->assertEquals('created_task', $activity->description);
