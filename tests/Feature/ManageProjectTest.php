@@ -48,11 +48,15 @@ class ManageProjectTest extends TestCase
 
         $project2 = factory(Project::class)->create();
 
-        $this->delete($project->path())->assertRedirect('/projects');
+        $this->actingAs($user)->delete($project->path())->assertRedirect('/projects');
 
         $this->delete($project2->path())->assertStatus(403);
 
         $this->assertDatabaseMissing('projects', $project->only('id'));
+
+        $project2->invite($nick = $this->signIn());
+
+        $this->actingAs($nick)->delete($project2->path())->assertStatus(403);
 
     }
 
