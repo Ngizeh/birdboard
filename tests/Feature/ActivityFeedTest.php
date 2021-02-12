@@ -15,8 +15,8 @@ class ActivityFeedTest extends TestCase
     /** @test **/
     public function it_records_an_activity_for_a_project()
     {
-        $this->signIn();
-        $project = factory(Project::class)->create(['owner_id' => auth()->id()]);
+        $user = $this->signIn();
+        $project = factory(Project::class)->create(['owner_id' => $user]);
         $this->assertCount(1, $project->activity);
         tap($project->activity->last(), function($activity) {
             $this->assertEquals('created_project', $activity->description);
@@ -26,8 +26,8 @@ class ActivityFeedTest extends TestCase
     /** @test **/
     public function it_records_an_activity_for_a_updated_project()
     {
-        $this->signIn();
-        $project = factory(Project::class)->create(['owner_id' => auth()->id()]);
+        $user = $this->signIn();
+        $project = factory(Project::class)->create(['owner_id' => $user]);
         $originalTitle = $project->title;
         $this->patch($project->path(), ['title' => 'Changed']);
         $this->assertCount(2, $project->activity);
@@ -58,9 +58,9 @@ class ActivityFeedTest extends TestCase
     /** @test **/
     public function it_records_an_activity_for_a_marked_as_completed_task()
     {
-        $this->signIn();
+        $user = $this->signIn();
 
-        $project = factory(Project::class)->create(['owner_id' => auth()->id()]);
+        $project = factory(Project::class)->create(['owner_id' => $user]);
         $task = $project->addTask('Test task');
         $task->completed();
         $this->assertCount(3, $task->project->activity);
@@ -70,9 +70,9 @@ class ActivityFeedTest extends TestCase
     /** @test **/
     public function it_records_an_activity_for_a_marked_as_incomplete_task()
     {
-        $this->signIn();
+        $user = $this->signIn();
 
-        $project = factory(Project::class)->create(['owner_id' => auth()->id()]);
+        $project = factory(Project::class)->create(['owner_id' => $user]);
         $task = $project->addTask('Test task');
         $task->completed();
         $this->assertCount(3, $task->project->activity);
@@ -84,9 +84,9 @@ class ActivityFeedTest extends TestCase
     /** @test **/
     public function it_records_an_activity_for_a_deleted_task()
     {
-        $this->signIn();
+        $user = $this->signIn();
 
-        $project = factory(Project::class)->create(['owner_id' => auth()->id()]);
+        $project = factory(Project::class)->create(['owner_id' => $user]);
         $task = $project->addTask('Test task');
         $task->delete();
         $this->assertCount(3, $project->fresh()->activity);
