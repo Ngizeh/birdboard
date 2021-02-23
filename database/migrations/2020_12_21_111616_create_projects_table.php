@@ -16,9 +16,9 @@ class CreateProjectsTable extends Migration
         Schema::create('projects', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('owner_id');
-            $table->text('title');
-            $table->string('description');
-            $table->string('notes')->nullable();
+            $table->string('title');
+            $table->text('description');
+            $table->text('notes')->nullable();
             $table->timestamps();
 
             $table->foreign('owner_id')->references('id')->on('users')->onDelete('cascade');

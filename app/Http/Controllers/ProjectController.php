@@ -3,30 +3,36 @@
 namespace App\Http\Controllers;
 
 use App\Project;
+use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Redirect;
+use Inertia\Inertia;
 
 class ProjectController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\View\View
+     * @param Project $project
+     * @return \Inertia\Response
      */
-    public function index()
+    public function index(Project $project)
     {
-        $projects = auth()->user()->accessibleProjects();
-
-        return view('projects.index', compact('projects'));
+        return Inertia::render('Project/Index', [
+            'projects' => auth()->user()->accessibleProjects()
+        ]);
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Routing\View|\Illuminate\View\View
+     * @param Project $project
+     * @return View|\Inertia\Response
      */
     public function create(Project $project)
     {
-        return view('projects.create', compact('project'));
+        return inertia('Project/Create', compact('project'));
     }
 
     /**
@@ -52,33 +58,36 @@ class ProjectController extends Controller
      * Display the specified resource.
      *
      * @param \App\Project $project
-     * @return \Illuminate\View\View
+     * @return \Inertia\Response
      */
     public function show(Project $project)
     {
         $this->authorize('update', $project);
 
-        return view('projects.show', compact('project'));
+        return Inertia::render('Project/Show', [
+            'project' => $project,
+            'activities' => $project->activity->load('subject', 'user'),
+            'project_tasks' => $project->tasks,
+            'can' => auth()->user()->can('manage', $project),
+            'status' =>  request()->session()->get('error'),
+        ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
      * @param \App\Project $project
-     * @return \Illuminate\View\View
+     * @return \Illuminate\View\View|\Inertia\Response|\Inertia\ResponseFactory
      */
     public function edit(Project $project)
     {
-        return view('projects.edit', compact('project'));
+        return inertia('Project/Edit', [
+            'project' => $project,
+            'status' => request()->session()->get('error')
+        ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Project $project
-     * @return \Illuminate\Routing\Redirector
-     */
+
     public function update(Project $project)
     {
         $this->authorize('update', $project);
@@ -86,12 +95,12 @@ class ProjectController extends Controller
         $attributes = request()->validate([
             'title' => 'sometimes|required',
             'description' => 'sometimes|required',
-            'notes' => 'sometimes|min:3'
+            'notes' => 'sometimes'
         ]);
 
         $project->update($attributes);
 
-        return redirect($project->path());
+        return Redirect::route('projects.show', $project);
     }
 
     /**
@@ -106,6 +115,6 @@ class ProjectController extends Controller
 
         $project->delete();
 
-        return redirect('/projects');
+        return Redirect::route('projects.index');
     }
 }
