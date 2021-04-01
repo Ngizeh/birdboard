@@ -1264,7 +1264,9 @@ var render = function() {
               "div",
               { staticClass: "text-red-500 mt-5" },
               _vm._l(_vm.$page.props.errors.invitations, function(error) {
-                return _c("ul", [_c("li", [_vm._v(_vm._s(error))])])
+                return _c("ul", { key: error }, [
+                  _c("li", [_vm._v(_vm._s(error))])
+                ])
               }),
               0
             )
@@ -1337,39 +1339,38 @@ var render = function() {
             {
               name: "model",
               rawName: "v-model",
-              value: _vm.form.completed,
-              expression: "form.completed"
+              value: _vm.form.checked,
+              expression: "form.checked"
             }
           ],
           attrs: { type: "checkbox", name: "completed" },
           domProps: {
             checked: _vm.form.completed ? "checked" : "",
-            checked: Array.isArray(_vm.form.completed)
-              ? _vm._i(_vm.form.completed, null) > -1
-              : _vm.form.completed
+            checked: Array.isArray(_vm.form.checked)
+              ? _vm._i(_vm.form.checked, null) > -1
+              : _vm.form.checked
           },
           on: {
             change: [
               function($event) {
-                var $$a = _vm.form.completed,
+                var $$a = _vm.form.checked,
                   $$el = $event.target,
                   $$c = $$el.checked ? true : false
                 if (Array.isArray($$a)) {
                   var $$v = null,
                     $$i = _vm._i($$a, $$v)
                   if ($$el.checked) {
-                    $$i < 0 &&
-                      _vm.$set(_vm.form, "completed", $$a.concat([$$v]))
+                    $$i < 0 && _vm.$set(_vm.form, "checked", $$a.concat([$$v]))
                   } else {
                     $$i > -1 &&
                       _vm.$set(
                         _vm.form,
-                        "completed",
+                        "checked",
                         $$a.slice(0, $$i).concat($$a.slice($$i + 1))
                       )
                   }
                 } else {
-                  _vm.$set(_vm.form, "completed", $$c)
+                  _vm.$set(_vm.form, "checked", $$c)
                 }
               },
               _vm.updateTask

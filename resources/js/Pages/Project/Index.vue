@@ -22,7 +22,6 @@ export default {
     components: {AppComponent, CardComponent},
     props : {
         projects : Array,
-        // can : [Array, Boolean],
         can : Boolean,
     },
     computed : {

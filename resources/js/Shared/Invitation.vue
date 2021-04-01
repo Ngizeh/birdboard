@@ -20,7 +20,7 @@
                     <button type="submit" class="bg-blue-400 mt-4 py-2 px-6 font-bold text-white rounded">Invite</button>
                 </form>
                 <div v-if="$page.props.errors.invitations" class="text-red-500 mt-5">
-                    <ul v-for="error in $page.props.errors.invitations">
+                    <ul v-for="error in $page.props.errors.invitations" :key="error">
                         <li>{{ error }}</li>
                     </ul>
                 </div>

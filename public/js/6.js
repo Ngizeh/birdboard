@@ -37,7 +37,6 @@ __webpack_require__.r(__webpack_exports__);
   },
   props: {
     projects: Array,
-    // can : [Array, Boolean],
     can: Boolean
   },
   computed: {

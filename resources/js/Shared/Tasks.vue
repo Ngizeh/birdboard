@@ -8,7 +8,7 @@
                        v-model="form.body">
                 <input type="checkbox" name="completed"
                        @change="updateTask"
-                       v-model="form.completed"
+                       v-model="form.checked"
                        :checked="form.completed ? 'checked' : ''"
                 >
             </div>
@@ -31,7 +31,7 @@ export default {
         updateTask(event){
             event.preventDefault()
             this.$inertia.patch(this.route('tasks.update',[this.project, this.task]), this.form)
-        }
+        },
     }
 }
 </script>
