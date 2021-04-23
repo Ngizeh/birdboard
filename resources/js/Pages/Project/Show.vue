@@ -3,7 +3,7 @@
         <header>
             <div class="flex justify-between items-center py-4">
                 <h3 class="text-gray-400 font-normal pr-4">
-                    <inertia-link href="'/projects">
+                    <inertia-link href="/projects">
                         My Projects / {{ project.title }}
                     </inertia-link>
                 </h3>
@@ -24,9 +24,7 @@
                     <form @submit.prevent="addNotes">
                         <textarea class="card mb-3 w-full h-64" placeholder="Have additional notes ?"
                                   name="notes" v-model="notes">{{ project.notes }}</textarea>
-                        <button class="button" type="submit">
-                            Add Notes
-                        </button>
+                        <bird-board-button class="bg-blue-400">Add Notes</bird-board-button>
                     </form>
                     <span v-if="status" class="text-red-500 mt-6" role="alert">
                       <strong>{{ status }}</strong>
@@ -50,8 +48,9 @@ import AppComponent from "@/Layouts/AppComponent";
 import CardComponent from "@/Components/CardComponent";
 import Invitation from "@/Shared/Invitation";
 import Tasks from "@/Shared/Tasks";
+import BirdBoardButton from "@/Components/Button";
  export default {
-     components: {Invitation, AppComponent, CardComponent, Tasks, Card},
+     components: {Invitation, AppComponent, CardComponent, Tasks, Card, BirdBoardButton},
      props : {
          project: Object,
          project_tasks: Array,

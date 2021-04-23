@@ -5,7 +5,6 @@
                 <div class="flex justify-between py-4 items-center">
                     <a class="navbar-brand" href='/'>
                         Birdboard
-                        <!-- {{ config('app.name', 'Laravel') }} -->
                     </a>
                     <ul class="pl-6 mr-auto">
                         <li>
@@ -23,10 +22,10 @@
                         <ul class="navbar-nav ml-auto flex space-x-6">
                             <template v-if="guest">
                                 <li class="nav-item">
-                                    <inertia-link class="nav-link" href="/login">Login</inertia-link>
+                                    <inertia-link href="/login">Login</inertia-link>
                                 </li>
                                 <li class="nav-item" v-if="canRegister">
-                                    <inertia-link class="nav-link" href="/register">Register</inertia-link>
+                                    <inertia-link href="/register">Register</inertia-link>
                                 </li>
                             </template>
                             <li v-else class="nav-item dropdown flex space-x-5">
@@ -37,17 +36,9 @@
                                 </inertia-link>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <!--                                    <inertia-link class="dropdown-item" href="/logout'"-->
-                                    <!--                                                  onclick="event.preventDefault();-->
-                                    <!--									document.getElementById('logout-form').submit();">-->
-                                    <!--                                        Logout-->
-                                    <!--                                    </inertia-link>-->
                                     <inertia-link :href="route('logout')" as="button" method="post">
                                         Logout
                                     </inertia-link>
-                                    <!--                                    <form id="logout-form" action="logout" method="POST" style="display: none;">-->
-
-                                    <!--                                    </form>-->
                                 </div>
                             </li>
                         </ul>
@@ -58,7 +49,7 @@
         </nav>
 
         <main class="py-4 container mx-auto">
-            <slot> </slot>
+            <slot/>
         </main>
     </div>
 </template>

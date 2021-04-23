@@ -6,7 +6,7 @@
 
 <script>
 export default {
-    name: "incompleted_task",
+    name: "incomplete_task",
     props : {
         activity: { Object }
     }

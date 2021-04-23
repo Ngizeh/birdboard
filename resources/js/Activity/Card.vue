@@ -15,11 +15,11 @@
    import created_task from "./created_task";
    import created_project from "./created_project";
    import deleted_task from "./deleted_task";
-   import incompleted_task from "./incompleted_task";
+   import incomplete_task from "./incomplete_task";
    import updated_project from "./updated_project";
    import moment from 'moment';
     export default {
-        components : { completed_task, created_task, created_project, deleted_task, incompleted_task,updated_project},
+        components : { completed_task, created_task, created_project, deleted_task, incomplete_task,updated_project},
         name: 'Card',
         props : {
             activities : Array

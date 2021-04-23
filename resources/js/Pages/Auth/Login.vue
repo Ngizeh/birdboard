@@ -5,37 +5,20 @@
                 <form @submit.prevent="login">
                     <h2 class="text-center text-2xl font-bold">Login</h2>
                     <div class="flex flex-col space-y-2">
-                        <label class="text-gray-700 font-medium" for="email">Email Address</label>
-                        <input type="text"
-                               id="email"
-                               v-model="form.email"
-                               class="border border-gray-300 rounded py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
-                               :class="[errors.email ? 'border-red-300' : '' ]" name="email"
-                               required autocomplete="email" autofocus>
-                        <span v-if="errors.email" class="text-red-300" role="alert">
-                            <strong>{{ errors.email }}</strong>
-                        </span>
+                        <bird-board-label for="email" value="Email"/>
+                        <bird-board-input v-model="form.email" :class="[errors.email ? 'border-red-300' : '' ]" required autocomplete="email" autofocus/>
+                        <bird-board-error/>
                     </div>
                     <div class="flex flex-col space-y-2 mt-4">
-                        <label class="text-gray-700 font-medium" for="password">Password</label>
-                        <input type="password"
-                               id="password"
-                               class="border border-gray-300 rounded py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
-                               :class="[ errors.password ? 'border-red-300'  : '']" name="password"
-                               v-model="form.password"
-                               required autocomplete="password" autofocus>
-                        <span v-if="errors.password" class="text-red-300" role="alert">
-                        <strong>{{ errors.password }}</strong>
-                    </span>
-
+                        <bird-board-label for="email" value="Password"/>
+                        <bird-board-input v-model="form.password" type="password" :class="[errors.password ? 'border-red-300' : '' ]" required autocomplete="email" autofocus/>
+                        <bird-board-error/>
                     </div>
                     <div class="flex items-center my-3">
                         <input type="checkbox" name="remember" id="remember" v-model:checked = "form.remember">
                         <p class="pl-4">Remember Me</p>
                     </div>
-                    <button class="bg-blue-400 rounded text-white py-3 px-6 mr-2" type="submit">
-                        Login
-                    </button>
+                    <bird-board-button class="bg-blue-400">Login</bird-board-button>
                     <inertia-link v-if="forgotPass" :href="route('password.request') ">
                         Forgot Your Password?
                     </inertia-link>
@@ -46,9 +29,13 @@
 </template>
 <script>
 import AppComponent from "@/Layouts/AppComponent";
+import BirdBoardInput from "@/Components/Input";
+import BirdBoardLabel from "@/Components/Label";
+import BirdBoardError from "@/Components/Error";
+import BirdBoardButton from "@/Components/Button";
 export default {
     name : 'Login',
-    components: {AppComponent},
+    components: {AppComponent, BirdBoardInput, BirdBoardLabel, BirdBoardError,BirdBoardButton},
     props : {
         forgotPass : Boolean,
         errors : Object

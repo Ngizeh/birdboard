@@ -8,15 +8,17 @@
     <div class="text-gray-400 py-5">{{ project.description }}</div>
         <div class="text-right" v-if="can">
             <form @submit.prevent="deletePost">
-                <button type="submit" class="bg-red-600 py-2 px-6 font-bold text-white rounded">Delete</button>
+                <bird-board-button class="bg-red-600">Delete</bird-board-button>
             </form>
         </div>
 </div>
 </template>
 
 <script>
+import BirdBoardButton from '@/Components/Button'
     export default {
         name : 'CardComponent',
+        components: { BirdBoardButton },
         props : {
             project : Object,
         },
