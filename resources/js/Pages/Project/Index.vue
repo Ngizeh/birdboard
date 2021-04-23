@@ -17,7 +17,7 @@
 
 <script>
 import AppComponent from "@/Layouts/AppComponent";
-import CardComponent from "@/components/CardComponent";
+import CardComponent from "@/Components/CardComponent";
 export default {
     components: {AppComponent, CardComponent},
     props : {

@@ -47,7 +47,7 @@
 <script>
 import Card from "@/Activity/Card";
 import AppComponent from "@/Layouts/AppComponent";
-import CardComponent from "@/components/CardComponent";
+import CardComponent from "@/Components/CardComponent";
 import Invitation from "@/Shared/Invitation";
 import Tasks from "@/Shared/Tasks";
  export default {
