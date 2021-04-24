@@ -18,6 +18,6 @@ class ProjectInvitationsController extends Controller
 
         session()->flash('invited', 'You have invited '. $user->email);
 
-        return Redirect::back();
+        return Redirect::route('projects.show', $project);
     }
 }

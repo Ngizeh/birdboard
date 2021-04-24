@@ -29,8 +29,7 @@ export default {
         }
     },
     methods : {
-        updateTask(event){
-            event.preventDefault()
+        updateTask(){
             this.$inertia.patch(this.route('tasks.update',[this.project, this.task]), this.form)
         },
     },

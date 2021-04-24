@@ -17,7 +17,7 @@ class ProjectTest extends TestCase
 	/** @test **/
 	public function path_to_the_project()
 	{
-		$project = factory(Project::class)->create();
+		$project = Project::factory()->create();
 
 		$this->assertEquals('/projects/'.$project->id, $project->path());
 	}
@@ -25,7 +25,7 @@ class ProjectTest extends TestCase
 	/** @test **/
 	public function belongs_to_the_users()
 	{
-		$project = factory(Project::class)->create();
+		$project = Project::factory()->create();
 
 		$this->assertInstanceOf(User::class, $project->owner);
 	}
@@ -33,9 +33,9 @@ class ProjectTest extends TestCase
 	/** @test **/
 	public function it_has_tasks()
 	{
-		$project = factory(Project::class)->create();
+		$project = Project::factory()->create();
 
-		$task = factory(Task::class)->create(['project_id' => $project->id]);
+		$task = Task::factory()->create(['project_id' => $project->id]);
 
 		$this->assertInstanceOf(Collection::class, $project->tasks);
 
@@ -44,9 +44,9 @@ class ProjectTest extends TestCase
     /** @test **/
     public function a_project_can_invite_a_user()
     {
-        $project = factory(Project::class)->create();
+        $project = Project::factory()->create();
 
-        $project->invite($user = factory(User::class)->create());
+        $project->invite($user = User::factory()->create());
 
         $this->assertTrue($project->members->contains($user));
     }

@@ -17,7 +17,7 @@ class ProjectTasksTest extends TestCase
     {
         $this->signIn();
 
-        $project = factory(Project::class)->create(['owner_id' => auth()->id()]);
+        $project = Project::factory()->create(['owner_id' => auth()->id()]);
 
         $this->post($project->path() . '/tasks', ['body' => 'Test body']);
 
@@ -29,7 +29,7 @@ class ProjectTasksTest extends TestCase
     public function a_task_can_have_a_user()
     {
         $user = $this->signIn();
-        $project = factory(Project::class)->create(['owner_id' => $user]);
+        $project = Project::factory()->create(['owner_id' => $user]);
 
         $project->addTask('Test task');
 
@@ -41,7 +41,7 @@ class ProjectTasksTest extends TestCase
     {
         $this->signIn();
 
-        $project = factory(Project::class)->create(['owner_id' => auth()->id()]);
+        $project = Project::factory()->create(['owner_id' => auth()->id()]);
 
         $task = $project->addTask('Test task');
 
@@ -60,7 +60,7 @@ class ProjectTasksTest extends TestCase
     {
         $this->signIn();
 
-        $project = factory(Project::class)->create(['owner_id' => auth()->id()]);
+        $project = Project::factory()->create(['owner_id' => auth()->id()]);
 
         $task = $project->addTask('Test task');
 
@@ -83,7 +83,7 @@ class ProjectTasksTest extends TestCase
 
         $this->signIn();
 
-        $project = factory(Project::class)->create();
+        $project = Project::factory()->create();
 
         $task = $project->addTask('Test task');
 
@@ -102,7 +102,7 @@ class ProjectTasksTest extends TestCase
     {
         $this->signIn();
 
-        $project = factory(Project::class)->create();
+        $project = Project::factory()->create();
 
         $this->post($project->path() . '/tasks', ['body' => 'Test body'])->assertStatus(403);
 
@@ -115,7 +115,7 @@ class ProjectTasksTest extends TestCase
     {
         $this->signIn();
 
-        $project = factory(Project::class)->create(['owner_id' => auth()->id()]);
+        $project = Project::factory()->create(['owner_id' => auth()->id()]);
 
         $task = $project->addTask('Test task');
 
@@ -130,7 +130,7 @@ class ProjectTasksTest extends TestCase
     {
         $this->signIn();
 
-        $project = factory(Project::class)->create(['owner_id' => auth()->id()]);
+        $project = Project::factory()->create(['owner_id' => auth()->id()]);
 
         $this->post($project->path() . '/tasks', [])->assertSessionHasErrors('body');
     }
@@ -138,7 +138,7 @@ class ProjectTasksTest extends TestCase
     /** @test * */
     public function guests_cannot_add_a_task()
     {
-        $project = factory(Project::class)->create();
+        $project = Project::factory()->create();
 
         $this->post($project->path() . '/tasks', [])->assertRedirect('/login');;
     }

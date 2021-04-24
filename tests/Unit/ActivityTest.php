@@ -17,7 +17,7 @@ class ActivityTest extends TestCase
     {
         $user = $this->signIn();
 
-        $project = factory(Project::class)->create(['owner_id' => $user]);
+        $project = Project::factory()->create(['owner_id' => $user]);
 
         $this->assertEquals($user->id, $project->activity()->first()->user->id);
     }

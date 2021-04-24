@@ -65,7 +65,6 @@ import BirdBoardButton from "@/Components/Button";
              task : {
                  body : ''
              },
-
          }
      },
      methods : {

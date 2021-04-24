@@ -2,15 +2,16 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Project extends Model
 {
-    use RecordsActivity;
+    use RecordsActivity, HasFactory;
 
     protected $guarded = [];
 
-    public function path()
+    public function path(): string
     {
     	return "/projects/{$this->id}";
     }

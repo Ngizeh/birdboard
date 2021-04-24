@@ -626,8 +626,7 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
-    updateTask: function updateTask(event) {
-      event.preventDefault();
+    updateTask: function updateTask() {
       this.$inertia.patch(this.route('tasks.update', [this.project, this.task]), this.form);
     }
   }

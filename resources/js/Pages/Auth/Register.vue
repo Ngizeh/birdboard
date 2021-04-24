@@ -28,7 +28,7 @@
                       <input type="checkbox" name="remember" id="remember" v-model:checked = form.remember>
                       <p class="pl-4">Remember Me</p>
                   </div>
-                  <bird-board-button>Login</bird-board-button>
+                  <bird-board-button class="bg-blue-400">Register</bird-board-button>
 
               </form>
           </div>

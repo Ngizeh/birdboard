@@ -1191,7 +1191,9 @@ var render = function() {
               _c("p", { staticClass: "pl-4" }, [_vm._v("Remember Me")])
             ]),
             _vm._v(" "),
-            _c("bird-board-button", [_vm._v("Login")])
+            _c("bird-board-button", { staticClass: "bg-blue-400" }, [
+              _vm._v("Register")
+            ])
           ],
           1
         )

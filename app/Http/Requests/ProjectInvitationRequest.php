@@ -34,7 +34,7 @@ class ProjectInvitationRequest extends FormRequest
     public function messages()
     {
         return [
-            'email.exists' => 'That email does exist in Birdboard account'
+            'email.exists' => 'That email does not exist in any Birdboard account'
         ];
     }
 }

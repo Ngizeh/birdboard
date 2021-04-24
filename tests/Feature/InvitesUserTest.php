@@ -16,26 +16,25 @@ class InvitesUserTest extends TestCase
 	public function project_owner_can_invite_user_via_route()
 	{
 
-		$project = factory(Project::class)->create();
+		$project = Project::factory()->create();
 
-		$userToInvite = factory(User::class)->create();
+		$userToInvite = User::factory()->create();
 
-		$response = $this->actingAs($project->owner)->post($project->path().'/invitations', [
+		$this->actingAs($project->owner)->post(route('invitations.store', $project), [
 			'email' => $userToInvite->email,
-		]);
+		])->assertRedirect(route('projects.show', $project));
 
-		$this->assertTrue($project->members->contains($userToInvite));
+        $this->assertTrue($project->members->contains($userToInvite));
 
-		$response->assertRedirect('/projects');
-	}
+    }
 
 	/** @test **/
 	public function project_owner_can_invite_user_via_route_who_exists_in_the_birdboard()
 	{
 
-		$project = factory(Project::class)->create();
+		$project = Project::factory()->create();
 
-		$this->actingAs($project->owner)->post($project->path().'/invitations', [
+		$this->actingAs($project->owner)->post(route('invitations.store', $project), [
 			'email' => 'usernotexisting@mail.com'
 		])->assertSessionHasErrors([
 			'email' => 'That email does not exist in any Birdboard account'
@@ -47,15 +46,15 @@ class InvitesUserTest extends TestCase
 	{
 		$user = $this->signIn();
 
-		$project = factory(Project::class)->create();
+		$project = Project::factory()->create();
 
-		$this->actingAs($user)->post($project->path().'/invitations', [
+		$this->actingAs($user)->post(route('invitations.store', $project), [
 			'email' => 'usernotexisting@mail.com'
 		])->assertStatus(403);
 
 		$project->invite($user);
 
-		$this->actingAs($user)->post($project->path().'/invitations', [
+		$this->actingAs($user)->post(route('invitations.store', $project), [
 			'email' => 'usernotexisting@mail.com'
 		])->assertStatus(403);
 	}
@@ -63,9 +62,9 @@ class InvitesUserTest extends TestCase
 	/** @test **/
 	public function it_can_invite_a_user()
 	{
-		$project = factory(Project::class)->create();
+		$project = Project::factory()->create();
 
-		$project->invite($user = factory(User::class)->create());
+		$project->invite($user = User::factory()->create());
 
 		$this->signIn($user);
 

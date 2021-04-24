@@ -16,7 +16,7 @@ class UserTest extends TestCase
     /** @test **/
     public function project_belongs_to_a_user()
     {
-    	$user = factory(User::class)->create();
+    	$user = User::factory()->create();
 
     	$this->assertInstanceOf(Collection::class, $user->projects);
     }
@@ -24,7 +24,7 @@ class UserTest extends TestCase
     /** @test **/
     public function task_belongs_to_a_user()
     {
-    	$user = factory(User::class)->create();
+    	$user = User::factory()->create();
 
     	$this->assertInstanceOf(Collection::class, $user->tasks);
     }
@@ -34,13 +34,13 @@ class UserTest extends TestCase
     {
         $user = $this->signIn();
 
-        factory(Project::class)->create(['owner_id' => $user ]);
+        Project::factory()->create(['owner_id' => $user ]);
         $this->assertCount(1, $user->accessibleProjects());
 
         $john = $this->signIn();
         $nick = $this->signIn();
 
-        tap(factory(Project::class)->create(['owner_id' => $john ]))->invite($user)->invite($nick);
+        tap(Project::factory()->create(['owner_id' => $john ]))->invite($user)->invite($nick);
 
         $this->assertCount(2, $user->accessibleProjects());
         $this->assertCount(1, $nick->accessibleProjects());
