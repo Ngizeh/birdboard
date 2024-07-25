@@ -3,10 +3,8 @@
 namespace Tests\Unit;
 
 use App\Project;
-use App\User;
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class ActivityTest extends TestCase
 {

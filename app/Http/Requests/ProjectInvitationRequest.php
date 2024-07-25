@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Gate;
 
 class ProjectInvitationRequest extends FormRequest
 {
-    protected $errorBag = 'invitations';
+    protected $errorBag = "invitations";
 
     /**
      * Determine if the user is authorized to make this request.
@@ -16,7 +16,7 @@ class ProjectInvitationRequest extends FormRequest
      */
     public function authorize()
     {
-        return Gate::allows('manage', $this->route('project'));
+        return Gate::allows("manage", $this->route("project"));
     }
 
     /**
@@ -27,15 +27,15 @@ class ProjectInvitationRequest extends FormRequest
     public function rules()
     {
         return [
-            'email' => 'required|exists:users,email'
+            "email" => "required|exists:users,email",
         ];
     }
 
     public function messages()
     {
         return [
-            'email.exists' => 'That email does not exist in any Birdboard account'
+            "email.exists" =>
+                "That email does not exist in any Birdboard account",
         ];
     }
 }
-

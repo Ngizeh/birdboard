@@ -43,9 +43,7 @@ class HandleInertiaRequests extends Middleware
             'canLogin' => Route::has('login'),
             'guest' => auth()->guest(),
             'canRegister' => Route::has('register'),
-            'flash' =>  $request->session()->get    ('invited')
+            'flash' =>  $request->session()->get('invited')
         ]);
     }
 }
-
-

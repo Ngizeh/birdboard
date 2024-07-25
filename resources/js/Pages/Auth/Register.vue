@@ -6,22 +6,22 @@
                   <h2 class="text-center text-2xl font-bold">Register</h2>
                   <div class="flex flex-col space-y-2">
                       <bird-board-label for="email" value="Name"/>
-                      <bird-board-input v-model="form.name" :class="[errors.name ? 'border-red-300' : '' ]" required autocomplete="email" autofocus/>
+                      <bird-board-input v-model="form.name" :class="[errors.name ? 'border-red-300' : '' ]" required autocomplete="name" autofocus/>
                       <bird-board-error/>
                   </div>
                   <div class="flex flex-col space-y-2 mt-4">
                       <bird-board-label for="email" value="Email"/>
-                      <bird-board-input v-model="form.email" :class="[errors.email ? 'border-red-300' : '' ]" required autocomplete="email" autofocus/>
+                      <bird-board-input type="email" v-model="form.email" :class="[errors.email ? 'border-red-300' : '' ]" required autocomplete="email" autofocus/>
                       <bird-board-error/>
                   </div>
                   <div class="flex flex-col space-y-2 mt-4">
-                      <bird-board-label for="email" value="Password"/>
-                      <bird-board-input v-model="form.password" :class="[errors.password ? 'border-red-300' : '' ]" required autocomplete="email" autofocus/>
+                      <bird-board-label for="password" value="Password"/>
+                      <bird-board-input type="password" v-model="form.password" :class="[errors.password ? 'border-red-300' : '' ]" required autocomplete="password" autofocus/>
                       <bird-board-error/>
                   </div>
                   <div class="flex flex-col space-y-2 mt-4">
-                      <bird-board-label for="email" value="Confirm Password"/>
-                      <bird-board-input v-model="form.password_confirmation" type="password" :class="[errors.password_confirmation ? 'border-red-300' : '' ]" required autocomplete="email" autofocus/>
+                      <bird-board-label for="confirm_password" value="Confirm Password"/>
+                      <bird-board-input v-model="form.password_confirmation" type="password" :class="[errors.password_confirmation ? 'border-red-300' : '' ]" required autocomplete="confirm_password" autofocus/>
                       <bird-board-error/>
                   </div>
                   <div class="flex items-center my-3">

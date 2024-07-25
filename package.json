@@ -10,7 +10,7 @@
         "production": "mix --production"
     },
     "devDependencies": {
-        "@tailwindcss/postcss7-compat": "^2.0.2",
+        "@tailwindcss/postcss7-compat": "npm:@tailwindcss/postcss7-compat@^2.0.2",
         "autoprefixer": "^9.8.6",
         "axios": "^0.19",
         "bootstrap": "^4.1.0",

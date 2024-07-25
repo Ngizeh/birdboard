@@ -2,12 +2,11 @@
 
 namespace Tests\Unit;
 
+use App\Project;
 use App\Task;
 use App\User;
-use App\Project;
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class TaskTest extends TestCase
 {

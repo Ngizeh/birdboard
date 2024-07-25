@@ -3,9 +3,7 @@
 namespace Tests\Feature;
 
 use App\Project;
-use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class ProjectTasksTest extends TestCase
@@ -19,7 +17,7 @@ class ProjectTasksTest extends TestCase
 
         $project = Project::factory()->create(['owner_id' => auth()->id()]);
 
-        $this->post($project->path() . '/tasks', ['body' => 'Test body']);
+        $this->post($project->path().'/tasks', ['body' => 'Test body']);
 
         $this->assertDatabaseHas('tasks', ['body' => 'Test body']);
 
@@ -45,12 +43,12 @@ class ProjectTasksTest extends TestCase
 
         $task = $project->addTask('Test task');
 
-        $this->patch($project->path() . '/tasks/' . $task->id, ['body' => 'changed', 'completed' => true])
+        $this->patch($project->path().'/tasks/'.$task->id, ['body' => 'changed', 'completed' => true])
             ->assertRedirect(route('projects.show', $project->id));
 
         $this->assertDatabaseHas('tasks', [
             'body' => 'changed',
-            'completed' => true
+            'completed' => true,
         ]);
 
     }
@@ -67,13 +65,13 @@ class ProjectTasksTest extends TestCase
         $task->completed();
 
         $this->assertDatabaseHas('tasks', [
-            'completed' => true
+            'completed' => true,
         ]);
 
         $task->incomplete();
 
         $this->assertDatabaseHas('tasks', [
-            'completed' => false
+            'completed' => false,
         ]);
     }
 
@@ -92,7 +90,7 @@ class ProjectTasksTest extends TestCase
 
         $this->assertDatabaseMissing('tasks', [
             'body' => 'changed',
-            'completed' => true
+            'completed' => true,
         ]);
 
     }
@@ -104,7 +102,7 @@ class ProjectTasksTest extends TestCase
 
         $project = Project::factory()->create();
 
-        $this->post($project->path() . '/tasks', ['body' => 'Test body'])->assertStatus(403);
+        $this->post($project->path().'/tasks', ['body' => 'Test body'])->assertStatus(403);
 
         $this->assertDatabaseMissing('tasks', ['body' => 'Test body']);
 
@@ -132,7 +130,7 @@ class ProjectTasksTest extends TestCase
 
         $project = Project::factory()->create(['owner_id' => auth()->id()]);
 
-        $this->post($project->path() . '/tasks', [])->assertSessionHasErrors('body');
+        $this->post($project->path().'/tasks', [])->assertSessionHasErrors('body');
     }
 
     /** @test * */
@@ -140,8 +138,6 @@ class ProjectTasksTest extends TestCase
     {
         $project = Project::factory()->create();
 
-        $this->post($project->path() . '/tasks', [])->assertRedirect('/login');;
+        $this->post($project->path().'/tasks', [])->assertRedirect('/login');
     }
-
-
 }

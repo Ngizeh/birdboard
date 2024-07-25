@@ -4,9 +4,8 @@ namespace Tests\Feature;
 
 use App\Project;
 use App\Task;
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class ActivityFeedTest extends TestCase
 {
@@ -18,11 +17,12 @@ class ActivityFeedTest extends TestCase
         $user = $this->signIn();
         $project = Project::factory()->create(['owner_id' => $user]);
         $this->assertCount(1, $project->activity);
-        tap($project->activity->last(), function($activity) {
+        tap($project->activity->last(), function ($activity) {
             $this->assertEquals('created_project', $activity->description);
             $this->assertNull($activity->changes);
         });
     }
+
     /** @test **/
     public function it_records_an_activity_for_a_updated_project()
     {
@@ -31,7 +31,7 @@ class ActivityFeedTest extends TestCase
         $originalTitle = $project->title;
         $this->patch($project->path(), ['title' => 'Changed']);
         $this->assertCount(2, $project->activity);
-        tap($project->activity->last(), function($activity) use ($originalTitle) {
+        tap($project->activity->last(), function ($activity) use ($originalTitle) {
             $this->assertEquals('updated_project', $activity->description);
             $expected = [
                 'before' => ['title' => $originalTitle],
@@ -49,7 +49,7 @@ class ActivityFeedTest extends TestCase
         $project->addTask('Test task');
 
         $this->assertCount(2, $project->activity);
-        tap($project->activity->last(), function($activity){
+        tap($project->activity->last(), function ($activity) {
             $this->assertEquals('created_task', $activity->description);
             $this->assertInstanceOf(Task::class, $activity->subject);
         });

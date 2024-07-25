@@ -6,12 +6,12 @@
                     <h2 class="text-center text-2xl font-bold">Login</h2>
                     <div class="flex flex-col space-y-2">
                         <bird-board-label for="email" value="Email"/>
-                        <bird-board-input v-model="form.email" :class="[errors.email ? 'border-red-300' : '' ]" required autocomplete="email" autofocus/>
+                        <bird-board-input type="email" v-model="form.email" :class="[errors.email ? 'border-red-300' : '' ]" required autocomplete="email" autofocus/>
                         <bird-board-error/>
                     </div>
                     <div class="flex flex-col space-y-2 mt-4">
                         <bird-board-label for="email" value="Password"/>
-                        <bird-board-input v-model="form.password" type="password" :class="[errors.password ? 'border-red-300' : '' ]" required autocomplete="email" autofocus/>
+                        <bird-board-input v-model="form.password" type="password" :class="[errors.password ? 'border-red-300' : '' ]" required autocomplete="password" autofocus/>
                         <bird-board-error/>
                     </div>
                     <div class="flex items-center my-3">
